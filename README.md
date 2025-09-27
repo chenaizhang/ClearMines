@@ -1,18 +1,18 @@
 # ClearMines 项目部署指南
 
-本项目包含一个 React 前端（通过 Vite 启动）以及一个采用 Node 原生 `http` 模块实现的排行榜服务。排行榜服务会将每个难度的前 100 名成绩持久化到 `server/data/leaderboard.json`，前端则通过 `/api` 代理获取前 10 名数据并提交成绩。
+本项目包含一个 React 前端实现的扫雷环境部署。
 
 ## 环境要求
 
-- Node.js 18 或更高版本（自带 npm）
-- Git（克隆代码用）
+- Node.js 18 或更高版本
+- Git
 
 > 如果你已经安装了 Node.js，则可以通过 `node -v` 与 `npm -v` 命令确认版本。
 
 ## 获取代码
 
 ```bash
-git clone https://example.com/ClearMines.git
+git@github.com:chenaizhang/ClearMines.git
 cd ClearMines
 npm install
 ```
@@ -69,7 +69,7 @@ Vite 默认监听 `http://localhost:5173`，同时会通过代理将 `/api` 请�
 
 ## 故障排查
 
-- **前端提示 ECONNREFUSED**：确认排行榜服务是否已启动，端口是否与 `vite.config.js` 中的代理目标一致。
+- **前端提示**：确认排行榜服务是否已启动，端口是否与 `vite.config.js` 中的代理目标一致。
 - **排行榜数据丢失**：检查 `server/data/leaderboard.json` 是否存在或具有写权限。
 - **端口冲突**：修改 `PORT` 环境变量后重启排行榜服务，并同步更新 `vite.config.js` 中的代理配置（或在运行前端前设置 `VITE_API_URL` 之类的自定义代理逻辑）。
 

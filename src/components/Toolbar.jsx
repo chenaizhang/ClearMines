@@ -112,45 +112,47 @@ const Toolbar = () => {
         </label>
       </div>
       {state.difficulty === "custom" && (
-        <div className="toolbar-group">
-          <form className="custom-config" onSubmit={handleCustomSubmit}>
-            <label>
-              行数
-              <input
-                type="number"
-                min="2"
-                max="50"
-                value={customRows}
-                onChange={(event) => setCustomRows(event.target.value)}
-              />
-            </label>
-            <label>
-              列数
-              <input
-                type="number"
-                min="2"
-                max="50"
-                value={customColumns}
-                onChange={(event) => setCustomColumns(event.target.value)}
-              />
-            </label>
-            <label>
-              地雷
-              <input
-                type="number"
-                min="1"
-                max={maxMinesAllowed ?? undefined}
-                value={customMines}
-                onChange={(event) => setCustomMines(event.target.value)}
-              />
-            </label>
-            <button type="submit">应用设置</button>
-          </form>
-          {maxMinesAllowed !== null && (
-            <span className="custom-config__hint">
-              可用地雷数量范围：1 - {maxMinesAllowed}
-            </span>
-          )}
+        <div className="toolbar-group toolbar-group--custom">
+          <div className="custom-config__row">
+            <form className="custom-config" onSubmit={handleCustomSubmit}>
+              <label>
+                行数
+                <input
+                  type="number"
+                  min="2"
+                  max="50"
+                  value={customRows}
+                  onChange={(event) => setCustomRows(event.target.value)}
+                />
+              </label>
+              <label>
+                列数
+                <input
+                  type="number"
+                  min="2"
+                  max="50"
+                  value={customColumns}
+                  onChange={(event) => setCustomColumns(event.target.value)}
+                />
+              </label>
+              <label>
+                地雷
+                <input
+                  type="number"
+                  min="1"
+                  max={maxMinesAllowed ?? undefined}
+                  value={customMines}
+                  onChange={(event) => setCustomMines(event.target.value)}
+                />
+              </label>
+              <button type="submit">应用设置</button>
+            </form>
+            {maxMinesAllowed !== null && (
+              <span className="custom-config__hint">
+                可用地雷数量范围：1 - {maxMinesAllowed}
+              </span>
+            )}
+          </div>
           {customError && (
             <span className="status-message status-message--defeat">
               {customError}
