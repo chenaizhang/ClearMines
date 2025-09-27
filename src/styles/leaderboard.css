@@ -1,0 +1,163 @@
+.leaderboard-panel {
+  margin-top: 24px;
+  padding: 18px;
+  border-radius: 12px;
+  background: rgba(34, 34, 46, 0.8);
+  border: 1px solid rgba(108, 122, 255, 0.25);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.35);
+  color: #f2f4ff;
+}
+
+.leaderboard-panel__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.leaderboard-panel__header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.leaderboard-panel__difficulty {
+  font-size: 0.9rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(111, 132, 255, 0.2);
+  border: 1px solid rgba(111, 132, 255, 0.35);
+}
+
+.leaderboard-panel__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.leaderboard-panel__label {
+  font-size: 0.9rem;
+  color: rgba(232, 235, 255, 0.85);
+}
+
+.leaderboard-panel__input-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.leaderboard-panel__controls input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(16, 17, 26, 0.95);
+  color: inherit;
+  font-size: 0.95rem;
+}
+
+.leaderboard-panel__controls input:focus {
+  outline: none;
+  border-color: rgba(116, 138, 255, 0.8);
+  box-shadow: 0 0 0 2px rgba(116, 138, 255, 0.25);
+}
+
+.leaderboard-panel__input-row button {
+  padding: 9px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(120, 138, 255, 0.45);
+  background: rgba(70, 86, 255, 0.18);
+  color: #f4f6ff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.leaderboard-panel__input-row button:hover:not(:disabled) {
+  background: rgba(98, 113, 255, 0.28);
+  border-color: rgba(140, 155, 255, 0.65);
+}
+
+.leaderboard-panel__input-row button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.leaderboard-panel__status {
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: #9ecaff;
+}
+
+.leaderboard-panel__note {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: rgba(220, 225, 255, 0.82);
+}
+
+.leaderboard-panel__list {
+  list-style: none;
+  margin: 16px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.leaderboard-panel__item {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr) 80px 140px;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(26, 27, 38, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.leaderboard-panel__rank {
+  font-weight: 700;
+  font-size: 1rem;
+  color: #c8d4ff;
+}
+
+.leaderboard-panel__name {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.leaderboard-panel__time {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  color: #9fffdc;
+}
+
+.leaderboard-panel__date {
+  font-size: 0.8rem;
+  color: rgba(224, 230, 255, 0.75);
+  text-align: right;
+}
+
+.leaderboard-panel__hint {
+  margin-top: 16px;
+  font-size: 0.9rem;
+  color: rgba(214, 221, 255, 0.8);
+}
+
+@media (max-width: 720px) {
+  .leaderboard-panel__item {
+    grid-template-columns: 28px minmax(0, 1fr) 70px;
+    grid-template-areas:
+      'rank name time'
+      '. date date';
+    row-gap: 4px;
+  }
+
+  .leaderboard-panel__date {
+    grid-area: date;
+    text-align: left;
+    font-size: 0.75rem;
+  }
+}
