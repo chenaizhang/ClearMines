@@ -20,7 +20,7 @@ const DIFFICULTY_LABELS = {
   custom: "自定义",
 };
 
-const MAX_LEADERBOARD_ROWS = 15;
+const MAX_LEADERBOARD_ROWS = 10;
 const USERNAME_STORAGE_KEY = "clearbomb-username";
 const USERNAME_LOCK_STORAGE_KEY = "clearbomb-username-locked";
 

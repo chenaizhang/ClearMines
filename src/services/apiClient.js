@@ -6,41 +6,38 @@ import {
   revealCell as revealCellLocal
 } from './localGameEngine.js';
 
-const LEADERBOARD_STORAGE_KEY = 'clearbomb-leaderboard';
-const MAX_ENTRIES_PER_DIFFICULTY = 100;
-
-const safeReadLeaderboard = () => {
-  if (typeof window === 'undefined' || !window.localStorage) {
-    return {};
-  }
-  try {
-    const raw = window.localStorage.getItem(LEADERBOARD_STORAGE_KEY);
-    if (!raw) {
-      return {};
-    }
-    const parsed = JSON.parse(raw);
-    return parsed && typeof parsed === 'object' ? parsed : {};
-  } catch (error) {
-    return {};
-  }
-};
-
-const safeWriteLeaderboard = (data) => {
-  if (typeof window === 'undefined' || !window.localStorage) {
-    return;
-  }
-  try {
-    window.localStorage.setItem(LEADERBOARD_STORAGE_KEY, JSON.stringify(data));
-  } catch (error) {
-    // Ignore storage failures to preserve gameplay flow.
-  }
-};
+const API_BASE = '/api';
+const CLIENT_LEADERBOARD_LIMIT = 10;
+const ALLOWED_DIFFICULTIES = new Set(['beginner', 'intermediate', 'expert']);
 
 const normaliseDifficultyKey = (value) => {
-  if (typeof value !== 'string' || !value.trim()) {
-    return 'custom';
+  if (typeof value !== 'string') {
+    return null;
   }
-  return value;
+  const trimmed = value.trim().toLowerCase();
+  if (!ALLOWED_DIFFICULTIES.has(trimmed)) {
+    return null;
+  }
+  return trimmed;
+};
+
+const parseJsonResponse = async (response) => {
+  const contentType = response.headers.get('content-type') ?? '';
+  if (!contentType.includes('application/json')) {
+    return {};
+  }
+  try {
+    return await response.json();
+  } catch (error) {
+    return {};
+  }
+};
+
+const buildError = (message, fallback) => {
+  if (typeof message === 'string' && message.trim()) {
+    return new Error(message.trim());
+  }
+  return new Error(fallback);
 };
 
 export const fetchBoard = async () => loadSnapshot();
@@ -53,13 +50,35 @@ export const autoMarkSelection = async (selection) => autoMarkSelectionLocal(sel
 
 export const resetGame = async (config) => resetLocalGame(config);
 
-export const fetchLeaderboard = async (difficulty, limit = 15) => {
+export const fetchLeaderboard = async (difficulty, limit = CLIENT_LEADERBOARD_LIMIT) => {
   const key = normaliseDifficultyKey(difficulty);
-  const collections = safeReadLeaderboard();
-  const entries = Array.isArray(collections[key]) ? collections[key].slice() : [];
-  entries.sort((a, b) => a.timeSeconds - b.timeSeconds || a.recordedAt.localeCompare(b.recordedAt));
-  const trimmedLimit = Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : entries.length;
-  return { entries: entries.slice(0, trimmedLimit) };
+  if (!key) {
+    throw new Error('无效的难度');
+  }
+
+  const safeLimit = Math.min(
+    CLIENT_LEADERBOARD_LIMIT,
+    Number.isFinite(limit) && limit > 0 ? Math.floor(limit) : CLIENT_LEADERBOARD_LIMIT
+  );
+
+  const searchParams = new URLSearchParams({ difficulty: key, limit: String(safeLimit) });
+  const response = await fetch(`${API_BASE}/leaderboard?${searchParams.toString()}`, {
+    headers: {
+      Accept: 'application/json'
+    }
+  });
+
+  if (!response.ok) {
+    const payload = await parseJsonResponse(response);
+    throw buildError(payload.error, '无法加载排行榜');
+  }
+
+  const payload = await parseJsonResponse(response);
+  if (!payload || !Array.isArray(payload.entries)) {
+    return { entries: [] };
+  }
+
+  return { entries: payload.entries.slice(0, CLIENT_LEADERBOARD_LIMIT) };
 };
 
 export const submitLeaderboardEntry = async ({ username, difficulty, timeSeconds }) => {
@@ -73,21 +92,27 @@ export const submitLeaderboardEntry = async ({ username, difficulty, timeSeconds
   }
 
   const key = normaliseDifficultyKey(difficulty);
-  const collections = safeReadLeaderboard();
-  const bucket = Array.isArray(collections[key]) ? collections[key] : [];
+  if (!key) {
+    throw new Error('无效的难度');
+  }
 
-  const entry = {
-    username: trimmedName,
-    difficulty: key,
-    timeSeconds: Math.round(timeSeconds),
-    recordedAt: new Date().toISOString()
-  };
+  const response = await fetch(`${API_BASE}/leaderboard`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      username: trimmedName,
+      difficulty: key,
+      timeSeconds: Math.round(timeSeconds)
+    })
+  });
 
-  const nextBucket = bucket.concat(entry);
-  nextBucket.sort((a, b) => a.timeSeconds - b.timeSeconds || a.recordedAt.localeCompare(b.recordedAt));
-  const limitedBucket = nextBucket.slice(0, MAX_ENTRIES_PER_DIFFICULTY);
-  collections[key] = limitedBucket;
-  safeWriteLeaderboard(collections);
+  const payload = await parseJsonResponse(response);
+  if (!response.ok) {
+    throw buildError(payload.error, '提交成绩失败');
+  }
 
-  return { entry };
+  return { entry: payload.entry };
 };
