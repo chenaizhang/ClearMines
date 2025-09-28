@@ -6,15 +6,23 @@ import LeaderboardPanel from "./LeaderboardPanel.jsx";
 import { GameContext } from "../context/GameContext.jsx";
 import "../styles/board.css";
 
-const statusLabel = (status) => {
-  switch (status) {
-    case "victory":
-      return "游戏胜利";
-    case "defeat":
-      return "游戏失败";
-    default:
-      return "进行中";
+const statusLabel = ({ status, timerActive, elapsedSeconds } = {}) => {
+  if (status === "victory") {
+    return "游戏胜利";
   }
+  if (status === "defeat") {
+    return "游戏失败";
+  }
+  if (status === "loading") {
+    return "加载中";
+  }
+  if (status === "error") {
+    return "加载失败";
+  }
+  if (!timerActive && elapsedSeconds === 0) {
+    return "请开局";
+  }
+  return "进行中";
 };
 
 const GameShell = () => {
@@ -35,7 +43,7 @@ const GameShell = () => {
             state.status === "victory" ? " status-message--victory" : ""
           }${state.status === "defeat" ? " status-message--defeat" : ""}`}
         >
-          {statusLabel(state.status)}
+          {statusLabel(state)}
         </span>
       </div>
       <div className="board-scroll-container">
