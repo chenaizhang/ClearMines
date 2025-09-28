@@ -12,7 +12,7 @@
 ## 获取代码
 
 ```bash
-git@github.com:chenaizhang/ClearMines.git
+git clone git@github.com:chenaizhang/ClearMines.git
 cd ClearMines
 npm install
 ```
