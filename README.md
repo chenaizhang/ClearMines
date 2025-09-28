@@ -41,7 +41,7 @@ npm install
    npm run server
    ```
    - 指定端口时：`set PORT=50000; npm run server`
-4. 数据文件会生成在 `server\data\leaderboard.json`。
+4. 首次运行时会自动创建 `server/data/leaderboard.json` 文件。
 
 ## 启动前端
 
@@ -77,13 +77,6 @@ pm2 start "npm run server" --name backend
 
 ## 故障排查
 
-- **前端提示**：确认排行榜服务是否已启动，端口是否与 `vite.config.js` 中的代理目标一致。
+- **前端提示“无法加载排行榜”**：确认排行榜服务是否已启动，端口是否与 `vite.config.js` 中的代理目标一致。
 - **排行榜数据丢失**：检查 `server/data/leaderboard.json` 是否存在或具有写权限。
-- **端口冲突**：修改 `PORT` 环境变量后重启排行榜服务，并同步更新 `vite.config.js` 中的代理配置（或在运行前端前设置 `VITE_API_URL` 之类的自定义代理逻辑）。
-
-## 生产部署提示
-
-- 可将排行榜服务部署到常见 Node 托管平台（如 pm2、systemd、Docker 等），并确保开放对应端口。
-- 前端可使用 `npm run build` 生成静态资源，再由任意静态服务器托管，同时将 `/api` 指向排行榜服务。
-
-如需进一步自定义部署方案（例如 HTTPS、反向代理或数据库存储），可以在现有 `server/index.js` 基础上扩展。
+- **端口冲突**：修改 `PORT` 环境变量后重启排行榜服务，并同步更新 `vite.config.js` 中的代理配置。
