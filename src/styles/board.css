@@ -1,9 +1,18 @@
+.board-scroll-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  justify-content: flex-start;
+}
+
 .board-wrapper {
   position: relative;
   padding: 16px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.35));
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
+  margin: 0 auto;
 }
 
 .board {

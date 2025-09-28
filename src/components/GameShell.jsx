@@ -38,9 +38,11 @@ const GameShell = () => {
           {statusLabel(state.status)}
         </span>
       </div>
-      <div className="board-wrapper">
-        <Board />
-        <SelectionOverlay />
+      <div className="board-scroll-container">
+        <div className="board-wrapper">
+          <Board />
+          <SelectionOverlay />
+        </div>
       </div>
       <LeaderboardPanel />
     </div>
