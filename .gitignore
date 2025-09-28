@@ -14,6 +14,9 @@ yarn-error.log*
 .env.*
 !.env.example
 
+# Server data
+server/data/leaderboard.json
+
 # OS / editor artifacts
 .DS_Store
 Thumbs.db
