@@ -33,9 +33,9 @@ npm install
    - 如需指定端口：`PORT=50000 npm run server`
 4. 首次运行时会自动创建 `server/data/leaderboard.json` 文件。
 
-### Windows (PowerShell)
+### Windows
 
-1. 从 [Node.js 官网](https://nodejs.org/) 下载并安装 Windows 安装包（确保勾选 npm）。
+1. 从 [Node.js 官网 官网安装包](https://nodejs.org/) 下载并安装 Windows 安装包。
 2. 打开 PowerShell，进入项目目录并执行 `npm install`。
 3. 运行服务器：
    ```powershell
