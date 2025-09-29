@@ -1,10 +1,46 @@
 {
   "beginner": [
     {
+      "username": "nishi",
+      "difficulty": "beginner",
+      "timeSeconds": 4.17,
+      "recordedAt": "2025-09-29T14:49:28.059Z"
+    },
+    {
       "username": "francis",
       "difficulty": "beginner",
       "timeSeconds": 7,
       "recordedAt": "2025-09-27T15:20:53.634Z"
+    },
+    {
+      "username": "nishi",
+      "difficulty": "beginner",
+      "timeSeconds": 7,
+      "recordedAt": "2025-09-29T14:28:32.860Z"
+    },
+    {
+      "username": "nishi",
+      "difficulty": "beginner",
+      "timeSeconds": 7,
+      "recordedAt": "2025-09-29T14:28:52.681Z"
+    },
+    {
+      "username": "nishi",
+      "difficulty": "beginner",
+      "timeSeconds": 7,
+      "recordedAt": "2025-09-29T14:30:06.020Z"
+    },
+    {
+      "username": "nishi",
+      "difficulty": "beginner",
+      "timeSeconds": 7,
+      "recordedAt": "2025-09-29T14:30:06.021Z"
+    },
+    {
+      "username": "nishi",
+      "difficulty": "beginner",
+      "timeSeconds": 7.12,
+      "recordedAt": "2025-09-29T14:49:40.285Z"
     },
     {
       "username": "francis",
