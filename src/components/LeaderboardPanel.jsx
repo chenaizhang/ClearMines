@@ -120,9 +120,8 @@ const LeaderboardPanel = () => {
   }, [trimmedUsername, isLocked]);
 
   useEffect(() => {
-    if (!isLocked) {
-      lastSubmissionRef.current = null;
-    }
+    // 保留 lastSubmissionRef 直到新一局开始或状态离开胜利，
+    // 避免在胜利后通过解锁/再次确认重复提交成绩。
   }, [isLocked]);
 
   const loadEntries = useCallback(async () => {
