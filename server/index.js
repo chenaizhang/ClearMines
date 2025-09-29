@@ -124,11 +124,12 @@ const toSafeUsername = (value) => {
 };
 
 const toSafeTimeSeconds = (value) => {
-  const numeric = Number.parseInt(value, 10);
+  const numeric = Number.parseFloat(value);
   if (!Number.isFinite(numeric) || numeric <= 0) {
     return null;
   }
-  return numeric;
+  // 保留两位小数
+  return Math.round(numeric * 100) / 100;
 };
 
 const handleSubmitLeaderboard = async (request, response) => {

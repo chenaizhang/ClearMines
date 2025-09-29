@@ -105,7 +105,8 @@ export const submitLeaderboardEntry = async ({ username, difficulty, timeSeconds
     body: JSON.stringify({
       username: trimmedName,
       difficulty: key,
-      timeSeconds: Math.round(timeSeconds)
+      // 传两位小数
+      timeSeconds: Math.round(timeSeconds * 100) / 100
     })
   });
 

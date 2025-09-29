@@ -66,6 +66,7 @@ const initialState = {
   cells: [],
   flagsRemaining: 0,
   status: "loading",
+  elapsedMs: 0,
   elapsedSeconds: 0,
   autoMarkEnabled: true,
   difficulty: "intermediate",
@@ -84,6 +85,7 @@ const reducer = (state, action) => {
         loading: true,
         status: "loading",
         error: null,
+        elapsedMs: 0,
         elapsedSeconds: 0,
         selection: { ...emptySelection },
       };
@@ -96,6 +98,7 @@ const reducer = (state, action) => {
         cells: action.payload.cells.map(normaliseCell),
         flagsRemaining: action.payload.flagsRemaining,
         status: action.payload.status,
+        elapsedMs: 0,
         elapsedSeconds: 0,
         loading: false,
         error: null,
@@ -176,7 +179,12 @@ const reducer = (state, action) => {
       if (state.status !== "playing") {
         return state;
       }
-      return { ...state, elapsedSeconds: state.elapsedSeconds + 1 };
+      {
+        const deltaMs = Number.isFinite(action.payload) ? action.payload : 10;
+        const nextElapsedMs = state.elapsedMs + deltaMs;
+        const nextElapsedSeconds = Math.floor(nextElapsedMs / 1000);
+        return { ...state, elapsedMs: nextElapsedMs, elapsedSeconds: nextElapsedSeconds };
+      }
     case "TOGGLE_AUTO_MARK":
       return { ...state, autoMarkEnabled: !state.autoMarkEnabled };
     case "SET_DIFFICULTY":
@@ -348,9 +356,15 @@ export const useMinesweeper = () => {
       return () => {};
     }
 
+    let last = performance.now();
     const interval = setInterval(() => {
-      dispatch({ type: "TICK" });
-    }, 1000);
+      const now = performance.now();
+      const delta = Math.max(0, Math.floor(now - last));
+      last = now;
+      // 以 10ms 的步进节流，避免过于频繁更新
+      const step = Math.max(10, Math.round(delta / 10) * 10);
+      dispatch({ type: "TICK", payload: step });
+    }, 10);
 
     return () => clearInterval(interval);
   }, [state.status, state.timerActive]);

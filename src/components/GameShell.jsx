@@ -36,7 +36,7 @@ const GameShell = () => {
           <strong>炸弹数</strong> {state.flagsRemaining}
         </span>
         <span>
-          <strong>计时</strong> {state.elapsedSeconds}s
+          <strong>计时</strong> {((state.elapsedMs ?? state.elapsedSeconds * 1000) / 1000).toFixed(2)}s
         </span>
         <span
           className={`status-message${

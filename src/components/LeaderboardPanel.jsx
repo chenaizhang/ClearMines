@@ -172,11 +172,12 @@ const LeaderboardPanel = () => {
       return;
     }
 
-    if (state.elapsedSeconds <= 0) {
+    if ((state.elapsedMs ?? state.elapsedSeconds * 1000) <= 0) {
       return;
     }
 
-    const submissionSignature = `${difficulty}-${state.rows}-${state.columns}-${state.mines}-${state.elapsedSeconds}`;
+    const preciseSeconds = Math.round(((state.elapsedMs ?? state.elapsedSeconds * 1000) / 1000) * 100) / 100;
+    const submissionSignature = `${difficulty}-${state.rows}-${state.columns}-${state.mines}-${preciseSeconds.toFixed(2)}`;
     // 若该对局已提交过，始终显示“成绩已提交！”直至下一把
     if (lastSubmissionRef.current === submissionSignature) {
       setStatusMessage("成绩已提交！");
@@ -202,7 +203,7 @@ const LeaderboardPanel = () => {
         await submitLeaderboardEntry({
           username: trimmedUsername,
           difficulty,
-          timeSeconds: state.elapsedSeconds,
+          timeSeconds: preciseSeconds,
         });
         if (cancelled) {
           return;
@@ -342,7 +343,7 @@ const LeaderboardPanel = () => {
               <span className="leaderboard-panel__rank">{index + 1}</span>
               <span className="leaderboard-panel__name">{entry.username}</span>
               <span className="leaderboard-panel__time">
-                {entry.timeSeconds}s
+                {Number(entry.timeSeconds).toFixed(2)}s
               </span>
               <span className="leaderboard-panel__date">
                 {formatTimestamp(entry.recordedAt)}
