@@ -172,6 +172,17 @@ const LeaderboardPanel = () => {
       return;
     }
 
+    if (state.elapsedSeconds <= 0) {
+      return;
+    }
+
+    const submissionSignature = `${difficulty}-${state.rows}-${state.columns}-${state.mines}-${state.elapsedSeconds}`;
+    // 若该对局已提交过，始终显示“成绩已提交！”直至下一把
+    if (lastSubmissionRef.current === submissionSignature) {
+      setStatusMessage("成绩已提交！");
+      return;
+    }
+
     if (!trimmedUsername) {
       setStatusMessage("输入并确认用户名后即可在胜利时提交成绩。");
       return;
@@ -179,15 +190,6 @@ const LeaderboardPanel = () => {
 
     if (!isLocked) {
       setStatusMessage("确认用户名后才能提交成绩。");
-      return;
-    }
-
-    if (state.elapsedSeconds <= 0) {
-      return;
-    }
-
-    const submissionSignature = `${difficulty}-${state.rows}-${state.columns}-${state.mines}-${state.elapsedSeconds}`;
-    if (lastSubmissionRef.current === submissionSignature) {
       return;
     }
     lastSubmissionRef.current = submissionSignature;
