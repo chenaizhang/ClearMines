@@ -1,6 +1,7 @@
 # ClearMines 项目部署指南
 
 本项目包含一个 React 前端实现的扫雷环境部署。
+[游戏链接](https://www.francischenai.cc/ClearMines/)
 
 ## 环境要求
 
