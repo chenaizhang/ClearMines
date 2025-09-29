@@ -12,7 +12,7 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: radial-gradient(circle at top, #2f2f4d, #12121a 55%);
   min-height: 100vh;
   display: flex;
@@ -43,9 +43,22 @@ body {
   text-align: center;
 }
 
+.app-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
 .app-header h1 {
   margin: 0 0 8px;
   font-size: 2.25rem;
+}
+
+.app-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
 }
 
 .app-header p {
